@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Gorduroso foods</string>
+    <string name="title_activity_first">Bem vindo</string>
+    <string name="title_activity_navigation">Olá Gorduroso</string>
+    <string name="lable_ok">Sim</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+</resources>
