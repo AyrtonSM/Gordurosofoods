@@ -53,9 +53,9 @@ public class ProfileActivity extends AppCompatActivity {
     private RecyclerView.Adapter adapter;
     private RecyclerView recyclerView;
     private Button finishButton;
-    private static boolean orderMade = false;
+    public static boolean orderMade = false;
     private CardView cardView;
-
+    public static TextView total = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +68,8 @@ public class ProfileActivity extends AppCompatActivity {
         email.setText(getIntent().getStringExtra("email"));
 
 
-        TextView total = findViewById(R.id.totalText);
+        total = findViewById(R.id.totalText);
+        if(CartUtils.getCarrinho() != null)
         total.setText("Total a Pagar : R$" + CartUtils.getCarrinho().getTotal());
 
 
@@ -113,7 +114,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         recyclerView.setLayoutManager(layoutManager);
 
-        adapter = new ProfileProductsAdapter(produtos,recyclerView);
+        adapter = new ProfileProductsAdapter(produtos,recyclerView,this);
         recyclerView.setAdapter(adapter);
 
     }

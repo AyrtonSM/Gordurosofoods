@@ -25,4 +25,17 @@
         android:text="Status do Pedido : "
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/userStatus" />
+
+    <Button
+        android:id="@+id/cancel"
+        android:layout_width="259dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:background="@color/colorPrimaryDark"
+        android:text="Cancelar Pedido"
+        android:textColor="#fff"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="97dp" />
 </android.support.constraint.ConstraintLayout>

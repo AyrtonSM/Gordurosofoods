@@ -1,9 +1,13 @@
 package com.example.gilberto.gordurosofoods;
 
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -38,7 +42,7 @@ public class StatusActivity extends AppCompatActivity {
 
         final TextView orderStatus =  findViewById(R.id.orderStatus);
 
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        final RequestQueue requestQueue = Volley.newRequestQueue(this);
         try {
             URI uri = UrlUtils.orders().toURI();
 
@@ -54,6 +58,10 @@ public class StatusActivity extends AppCompatActivity {
                             orderStatus.append("Confirmado, Preparando...");
                         }else if(Integer.parseInt(jsonObject.get("status").toString())==2){
                             orderStatus.append("Pedido Pronto! A caminho da entrega");
+                        }else if(Integer.parseInt(jsonObject.get("status").toString())==3){
+                            orderStatus.append("Pedido entregue. Muito Obrigado");
+                            CartUtils.createCart(null);
+                            ProfileActivity.orderMade = false;
                         }
 
 
@@ -89,6 +97,63 @@ public class StatusActivity extends AppCompatActivity {
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
+
+
+        Button cancel = findViewById(R.id.cancel);
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
+                try {
+                    URI uri = UrlUtils.orders().toURI();
+                    StringRequest request = new StringRequest(Request.Method.PUT, uri.toString(), new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+
+                            Toast.makeText(getApplicationContext(),response,Toast.LENGTH_SHORT).show();
+                            CartUtils.createCart(null);
+                            ProfileActivity.orderMade = false;
+
+
+
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+
+                        }
+                    }){
+
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            HashMap<String,String> params = new HashMap<>();
+                            params.put("cancel",String.valueOf(200));
+                            params.put("order_id",String.valueOf(CartUtils.getCarrinho().getPedido().getId()));
+                            return params;
+                        }
+                    };
+
+
+                    requestQueue.add(request);
+                    requestQueue.start();
+
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
+
+
+
+
+
+
+
+
+
+
+
+            }
+        });
 
 
 
