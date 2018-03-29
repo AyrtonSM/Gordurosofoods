@@ -24,7 +24,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".DetailActivity" />
         <activity android:name=".ProfileActivity" />
-        <activity android:name=".StatusActivity"></activity>
+        <activity android:name=".StatusActivity" />
+        <activity android:name=".MyOrdersActivity"></activity>
     </application>
 
 </manifest>

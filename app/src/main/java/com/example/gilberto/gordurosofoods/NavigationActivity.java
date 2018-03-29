@@ -280,6 +280,12 @@ public class NavigationActivity extends AppCompatActivity
             if (id == R.id.action_settings) {
                 return true;
             }
+            if(id == R.id.action_orders){
+                Intent intent = new Intent(this,MyOrdersActivity.class);
+                startActivity(intent);
+
+                return true;
+            }
 
             return super.onOptionsItemSelected(item);
         }
@@ -298,8 +304,6 @@ public class NavigationActivity extends AppCompatActivity
                     startActivity(intent);
 
             } else if (id == R.id.nav_gallery) {
-
-
 
             } else if (id == R.id.nav_share) {
 

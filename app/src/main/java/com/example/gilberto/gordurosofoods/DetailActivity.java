@@ -23,6 +23,7 @@ import com.example.gilberto.gordurosofoods.utils.CartUtils;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Random;
 
 public class DetailActivity extends AppCompatActivity {
@@ -75,6 +76,7 @@ public class DetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Produto produto = new Produto();
+
                 produto.setId(getIntent().getIntExtra("id",0));
 
                 produto.setNome(nameDetails.getText().toString());
@@ -110,16 +112,46 @@ public class DetailActivity extends AppCompatActivity {
                 }
                 else {
                     if(!quantidade.getText().toString().equals("")) {
+                        boolean foundPreviouslyCreatedItem = false;
+                        // Verifica se existe algum item com o mesmo ID para que altere a quantidade e o preco total
 
-                        ItemPedido itemPedido = new ItemPedido();
-                        itemPedido.setProduto(produto);
-                        itemPedido.setQuantidade(Integer.parseInt(quantidade.getText().toString()));
-                        itemPedido.setTotal(itemPedido.getQuantidade() * normalizePrice(precoDetails.getText().toString()));
+                        Iterator<ItemPedido> itemPedidoIterator = CartUtils.getCarrinho().getPedido().getItens().iterator();
+                        while (itemPedidoIterator.hasNext()){
+                            ItemPedido itemP = itemPedidoIterator.next();
+
+                            if(itemP.getProduto().getId() == produto.getId()) {
+
+                                int quant = Integer.parseInt(quantidade.getText().toString());
+
+                                itemP.setQuantidade(itemP.getQuantidade() + quant);
+                                itemP.setTotal(itemP.getQuantidade() * normalizePrice(precoDetails.getText().toString()));
+                                Toast.makeText(getApplicationContext(), "Adicionado na sacola", Toast.LENGTH_SHORT).show();
+
+                                double total = (CartUtils.getCarrinho().getTotal() - (itemP.getQuantidade() - quant) * itemP.getProduto().getPreco()) + itemP.getTotal();
+                                CartUtils.getCarrinho().setTotal(total);
+
+                                foundPreviouslyCreatedItem = true;
+
+                                break;
 
 
-                        Carrinho2 carrinho2 = CartUtils.getCarrinho();
-                        carrinho2.getPedido().getItens().add(itemPedido);
-                        carrinho2.setTotal(carrinho2.getTotal() + itemPedido.getTotal());
+                            }
+                        }
+                        // Verifica se o item não estava na lista
+                        if(!foundPreviouslyCreatedItem){
+
+                            ItemPedido itemPedido = new ItemPedido();
+
+                            itemPedido.setProduto(produto);
+                            itemPedido.setQuantidade(Integer.parseInt(quantidade.getText().toString()));
+                            itemPedido.setTotal(itemPedido.getQuantidade() * normalizePrice(precoDetails.getText().toString()));
+
+
+                            Carrinho2 carrinho2 = CartUtils.getCarrinho();
+                            carrinho2.getPedido().getItens().add(itemPedido);
+                            carrinho2.setTotal(carrinho2.getTotal() + itemPedido.getTotal());
+
+                        }
 
                     }else{
                         Toast.makeText(getApplicationContext(),"Informe a quantidade",Toast.LENGTH_SHORT).show();
