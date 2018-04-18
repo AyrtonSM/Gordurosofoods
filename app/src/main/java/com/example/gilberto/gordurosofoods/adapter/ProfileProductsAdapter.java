@@ -110,7 +110,7 @@ public class ProfileProductsAdapter extends RecyclerView.Adapter<ProfileProducts
             });
 
 
-            holder.imageProduct.setImageDrawable(produtos.get(position).getProduto().getImageView().getDrawable());
+            //holder.imageProduct.setImageDrawable(produtos.get(position).getProduto().getImageView().getDrawable());
 
             holder.preco.setText("R$ " + String.valueOf(produtos.get(position).getProduto().getPreco() * produtos.get(position).getQuantidade()));
             holder.nomeProduct.setText(produtos.get(position).getProduto().getNome());

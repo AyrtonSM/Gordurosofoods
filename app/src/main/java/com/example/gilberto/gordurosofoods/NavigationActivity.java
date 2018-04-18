@@ -82,8 +82,12 @@ public class NavigationActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                if(CartUtils.getCarrinho() != null)
+                    Snackbar.make(view, "Valor na sacola : R$ "+ CartUtils.getCarrinho().getTotal(), Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                else
+                    Snackbar.make(view, "Valor na sacola : R$ 0.0", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
             }
         });
 

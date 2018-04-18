@@ -64,8 +64,6 @@ public class StatusActivity extends AppCompatActivity {
                             ProfileActivity.orderMade = false;
                         }
 
-
-
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -114,7 +112,9 @@ public class StatusActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(),response,Toast.LENGTH_SHORT).show();
                             CartUtils.createCart(null);
                             ProfileActivity.orderMade = false;
-
+                            ProfileActivity.finishButton.setVisibility(View.VISIBLE);
+                            ProfileActivity.details.setVisibility(View.GONE);
+                            finish();
 
 
                         }

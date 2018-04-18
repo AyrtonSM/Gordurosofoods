@@ -51,7 +51,7 @@ public class OrdersMadeAdapter extends RecyclerView.Adapter<OrdersMadeAdapter.Vi
     @Override
     public OrdersMadeAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.orders_layout,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.my_orders,parent,false);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
 

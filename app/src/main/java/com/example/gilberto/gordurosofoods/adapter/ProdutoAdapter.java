@@ -84,13 +84,15 @@ public class ProdutoAdapter extends RecyclerView.Adapter<ProdutoAdapter.ViewHold
                  * O código abaixo converte um drawable em uma imagem bitmap e consequentemente em um array
                  * de bytes para ser enviado entre as activities para que do outro lado pegue a getIntent().getByteExtra()
                  */
-                Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),R.drawable.enroladinho_de_salsicha);
+
+               /* Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(),R.drawable.enroladinho_de_salsicha);
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
                 bitmap.compress(Bitmap.CompressFormat.PNG,100,byteArrayOutputStream);
                 byte[] bytes = byteArrayOutputStream.toByteArray();
+                */
 
-                intent.putExtra("imagem",bytes);
+                //intent.putExtra("imagem",bytes);
                 intent.putExtra("nome",holder.nomeProduto.getText());
                 intent.putExtra("preco",holder.precoProduto.getText());
                 holder.id = produtos.get(position).getId();

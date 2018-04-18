@@ -45,10 +45,10 @@ public class DetailActivity extends AppCompatActivity {
         precoDetails.setText(getIntent().getStringExtra("preco"));
 
         // Pegando a imagem passada pela activity anterior
-        byte[] bytes = getIntent().getByteArrayExtra("imagem");
+       /* byte[] bytes = getIntent().getByteArrayExtra("imagem");
         Bitmap bitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
         imagemProduto.setImageBitmap(bitmap);
-
+        */
 
         ImageButton moreButton = findViewById(R.id.moreButton);
         ImageButton lessButton = findViewById(R.id.lessButton);
@@ -81,7 +81,7 @@ public class DetailActivity extends AppCompatActivity {
 
                 produto.setNome(nameDetails.getText().toString());
                 produto.setPreco(normalizePrice(precoDetails.getText().toString()));
-                produto.setImageView(imagemProduto);
+                //produto.setImageView(imagemProduto);
 
                 if(CartUtils.getCarrinho() == null){
                     if(!quantidade.getText().toString().equals("")) {

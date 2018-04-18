@@ -1,9 +1,12 @@
 package com.example.gilberto.gordurosofoods;
 
+import android.app.TaskStackBuilder;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
+import android.support.annotation.UiThread;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -47,12 +50,19 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.BlockingDeque;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 public class ProfileActivity extends AppCompatActivity {
+
     private RecyclerView.LayoutManager layoutManager;
     private RecyclerView.Adapter adapter;
     private RecyclerView recyclerView;
-    private Button finishButton;
+    public static Button finishButton;
+    public static Button details;
     public static boolean orderMade = false;
     private CardView cardView;
     public static TextView total = null;
@@ -69,10 +79,16 @@ public class ProfileActivity extends AppCompatActivity {
 
 
         total = findViewById(R.id.totalText);
-        if(CartUtils.getCarrinho() != null)
-        total.setText("Total a Pagar : R$" + CartUtils.getCarrinho().getTotal());
 
-
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if(CartUtils.getCarrinho() != null)
+                    total.setText("Total a Pagar : R$" + CartUtils.getCarrinho().getTotal());
+                else
+                    total.setText("Nada adionada na sua sacola");
+            }
+        });
 
 
         if(CartUtils.getCarrinho() != null)
@@ -212,6 +228,7 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
+        details = status;
         cardView.addView(status);
         return cardView;
     }

@@ -1,7 +1,9 @@
 package com.example.gilberto.gordurosofoods;
 
 import android.content.Intent;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -64,6 +66,7 @@ public class MyOrdersActivity extends AppCompatActivity {
             URI uri = UrlUtils.orders().toURI();
 
             StringRequest request = new StringRequest(Request.Method.GET, uri.toString().concat("?user_id=1"), new Response.Listener<String>() {
+                @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                 @Override
                 public void onResponse(String response) {
                     Toast.makeText(getApplicationContext(),response,Toast.LENGTH_SHORT).show();
@@ -74,14 +77,15 @@ public class MyOrdersActivity extends AppCompatActivity {
                         Pedido pedido = new Pedido();
                         pedido.setPrecoTotal(jsonObject.getDouble("total"));
                         pedido.setQuantidadeItens(jsonObject.getInt("quantidade"));
-                        pedido.setId(jsonObject.getInt("id"));
+                        pedido.setId(jsonObject.getInt("pedido"));
                         ItemPedido itemPedido;
                         List<ItemPedido> items = new ArrayList<>();
-                        String[] produtos = (String[])jsonObject.get("produtos");
-                        for(int i = 0 ; i < produtos.length ; i++){
+
+                        JSONArray jsonArray = new JSONArray(String.valueOf(jsonObject.get("produtos")));
+                        for(int i = 0 ; i < jsonArray.length() ; i++){
                             itemPedido = new ItemPedido();
                             Produto produto = new Produto();
-                            produto.setNome(produtos[i]);
+                            produto.setNome(jsonArray.getString(i));
                             itemPedido.setProduto(produto);
 
                             items.add(itemPedido);
@@ -92,15 +96,10 @@ public class MyOrdersActivity extends AppCompatActivity {
                         pedido.setItens(items);
                         pedidoList.add(pedido);
 
+                        buildRecycler(pedidoList);
                         Toast.makeText(getApplicationContext(),pedidoList.toString(),Toast.LENGTH_SHORT).show();
 
-                        recyclerView = findViewById(R.id.ordersDoneRecycler);
-                        mLayoutManager = new LinearLayoutManager(getApplicationContext());
-                        recyclerView.setLayoutManager(mLayoutManager);
 
-
-                        mAdapter = new OrdersMadeAdapter(pedidoList);
-                        recyclerView.setAdapter(mAdapter);
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -119,7 +118,6 @@ public class MyOrdersActivity extends AppCompatActivity {
 
             queue.add(request);
             queue.start();
-
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
@@ -129,7 +127,13 @@ public class MyOrdersActivity extends AppCompatActivity {
 
 
     public void buildRecycler(List<Pedido> pedidos){
+        recyclerView = findViewById(R.id.ordersDoneRecycler);
+        recyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(mLayoutManager);
 
+        mAdapter = new OrdersMadeAdapter(pedidos);
+        recyclerView.setAdapter(mAdapter);
 
     }
 
